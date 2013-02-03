@@ -5,12 +5,18 @@ from pygments import highlight
 from pygments.lexers import CppLexer
 from pygments.formatters import HtmlFormatter
 
+from utils import pairwise
+
+def convert_name_to_file(name, extension = ''):
+    return name.lower().replace(' ', '-') + extension
+
 def render_index(examples):
     ExampleListRender = ""
     for line in examples.split('\n'):
         line = line.strip()
+        linkname = convert_name_to_file(line, '.html')
         if len( line ) != 0:
-            ExampleListRender = ExampleListRender + '<li><a href="' + line + '.html">' + line + '</a></li>\n'
+            ExampleListRender = ExampleListRender + '<li><a href="' + linkname + '">' + line + '</a></li>\n'
 
     with open('templates/index.tmpl', 'r') as content_file:
         content = content_file.read()
@@ -22,8 +28,9 @@ def render_index(examples):
 
 
 def extract_example_blocks(example_name):
-    path = "examples/" + example_name + "/"
-    path = path + example_name + ".cc"
+    path = os.path.join("examples",
+                        convert_name_to_file(example_name),
+                        convert_name_to_file(example_name, ".cc"))
 
     with open(path, 'r') as example_file:
         example = example_file.read()
@@ -59,10 +66,10 @@ def extract_example_blocks(example_name):
     return blocks
 
 def render_examples(examples):
-    for line in examples.split('\n'):
-        line = line.strip()
-        if len( line ) != 0:
-            blocks = extract_example_blocks(line)
+    for current, nextup in pairwise( examples.split('\n') ):
+        current = current.strip()
+        if len( current ) != 0:
+            blocks = extract_example_blocks(current)
 
             BlockRender = ""
             count = 0
@@ -83,14 +90,19 @@ def render_examples(examples):
                     BlockRender += '</pre>\n</td>\n'
                     count += 1
 
+        NextRender = ''
+        if nextup != None:
+            next_html_name = convert_name_to_file(nextup.strip(), '.html')
+            NextRender = '<p>Next example: <a href="' + next_html_name + '">' + nextup + '</a></p>'
+
         with open('templates/example.tmpl', 'r') as template_file:
             content = template_file.read()
 
         s = Template(content)
 
-        html_name = 'public/'+line+'.html'
+        html_name = os.path.join('public', convert_name_to_file(current, '.html'))
         with open(html_name, 'w') as output_file:
-            output_file.write( s.substitute(Block=BlockRender) )
+            output_file.write( s.substitute(Block=BlockRender, ExampleName=current, NextBlock=NextRender) )
 
 if __name__ == "__main__":
 
@@ -98,12 +110,16 @@ if __name__ == "__main__":
     pwd = os.getcwd()
     public_dir = os.path.join(pwd, 'public')
     template_dir = os.path.join(pwd, 'templates')
-    shutil.rmtree(public_dir)
+    if os.path.exists(public_dir):
+        shutil.rmtree(public_dir)
+
     os.mkdir(public_dir)
     shutil.copy(os.path.join(template_dir, 'site.css'), public_dir)
 
     with open('examples.txt', 'r') as examples_file:
         examples = examples_file.read()
+
+    examples = os.linesep.join([s for s in examples.splitlines() if s])
 
     render_index(examples)
     render_examples(examples)

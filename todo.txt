@@ -1,0 +1,5 @@
+To Do List:
+
+* run comments through an markown processor
+* fix spacing so that comments don't run together
+* make first comment and last comment blocks special so that they span both columns
