@@ -1,5 +1,6 @@
 from string import Template
 import re, os, shutil
+import markdown
 
 from pygments import highlight
 from pygments.lexers import CppLexer
@@ -81,7 +82,7 @@ def render_examples(examples):
                     count = 0
                 if flag:
                     BlockRender += '<td class="doc">\n'
-                    BlockRender += value
+                    BlockRender += markdown.markdown(value)
                     BlockRender += '\n</td>\n'
                     count += 1
                 else:
