@@ -4,3 +4,4 @@ To Do List:
 * fix spacing so that comments don't run together
 * add parsing and rendering of shell output files
 * make first comment and last comment blocks special so that they span both columns
+* integrate with .dexy for compilation and output generation
