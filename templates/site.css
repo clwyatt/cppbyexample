@@ -83,6 +83,7 @@ div.example table {
     margin-top: 15px;
     margin-bottom: 20px;
 }
+
 p.next {
     margin-bottom: 20px;
 }
@@ -94,9 +95,8 @@ p.footer a, p.footer a:visited {
     color: grey;
 }
 div#intro {
-    width: 420px;
-    min-width: 420px;
-    max-width: 420px;
+    min-width: 600px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 120px;
@@ -124,6 +124,18 @@ td.docs p {
     padding-top: 5px;
     padding-bottom: 15px;
 }
+div.example ol {
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    list-style-type:lower-alpha
+}
+
+div.example ol li {
+    padding-left: 25px;
+    margin-left: 25px;
+}
+
 td.code {
     width: 480px;
     max-width: 480px;

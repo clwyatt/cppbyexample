@@ -42,7 +42,7 @@ def extract_example_blocks(example_name):
         comment = (re.search('^//', line.strip() ) != None)
 
         if block[0] and comment:
-            block[1]+=' '
+            block[1]+='\n'
             block[1]+=line.strip()[2:]
             continue
 
