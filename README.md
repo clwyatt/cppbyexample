@@ -2,7 +2,11 @@
 
 Annotated C++ examples for education.
 
-Inspired by [gobyexample](https://gobyexample.com/).
+## Acknowledgments
+
+Inspired by [gobyexample](https://gobyexample.com/). It is
+based on code from [pycco](http://fitzgen.github.com/pycco/),
+copyrighted 2010 by Nick Fitzgerald; see that page for details.
 
 ## Build
 
